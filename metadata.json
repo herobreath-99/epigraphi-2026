@@ -1,0 +1,5 @@
+{
+  "name": "Epigraphi Dz",
+  "description": "تطبيق Epigraphi للتعرف على النقوش الأثرية وترجمتها باستخدام الذكاء الاصطناعي — Epigraphic inscription atlas and scanner.",
+  "requestFramePermissions": ["camera", "geolocation"]
+}

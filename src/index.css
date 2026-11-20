@@ -1,0 +1,437 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,500;1,600;1,700&family=Manrope:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 10% 7%;
+    --foreground: 35 15% 90%;
+
+    --card: 40 8% 11%;
+    --card-foreground: 35 15% 90%;
+
+    --popover: 40 8% 11%;
+    --popover-foreground: 35 15% 90%;
+
+    --primary: 43 88% 63%;
+    --primary-foreground: 40 10% 7%;
+
+    --secondary: 40 6% 14%;
+    --secondary-foreground: 35 10% 70%;
+
+    --muted: 40 5% 18%;
+    --muted-foreground: 35 8% 45%;
+
+    --accent: 43 88% 63%;
+    --accent-foreground: 40 10% 7%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 8% 15%;
+    --input: 40 8% 15%;
+    --ring: 43 88% 63%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 40 10% 7%;
+    --sidebar-foreground: 35 15% 90%;
+    --sidebar-primary: 43 88% 63%;
+    --sidebar-primary-foreground: 40 10% 7%;
+    --sidebar-accent: 40 6% 14%;
+    --sidebar-accent-foreground: 35 15% 90%;
+    --sidebar-border: 40 8% 15%;
+    --sidebar-ring: 43 88% 63%;
+
+    /* Custom tokens — Royal Gold Heritage */
+    --gold: 43 88% 63%;
+    --gold-deep: 38 70% 53%;
+    --gold-light: 43 50% 72%;
+    --gold-dark: 30 60% 30%;
+    --surface: 40 10% 7%;
+    --surface-container-low: 40 8% 10%;
+    --surface-container: 40 8% 13%;
+    --surface-container-high: 40 7% 17%;
+    --surface-bright: 40 6% 23%;
+    --on-surface: 35 15% 90%;
+    --on-surface-variant: 35 8% 55%;
+    --outline-variant: 38 20% 27%;
+    --sandstone: 40 8% 16%;
+    --sandstone-light: 40 6% 22%;
+    --success: 152 60% 40%;
+    --warning: 38 92% 50%;
+    --tech-cyan: 180 40% 45%;
+    --neon-glow: 43 88% 63%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: "Manrope", "Noto Sans Arabic", sans-serif;
+    background-color: hsl(var(--background));
+    background-image:
+      linear-gradient(
+        to bottom,
+        hsl(var(--background) / 0.55) 0%,
+        hsl(var(--background) / 0.45) 45%,
+        hsl(var(--background) / 0.65) 100%
+      ),
+      url("/images/app-background.png");
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: fixed, fixed;
+  }
+
+  /* Make page-level wrappers transparent so the global background shows through.
+     Pages still use glass-cards / overlays for readable text & forms. */
+  body .min-h-screen.bg-background,
+  body .min-h-screen.flex.bg-background {
+    background-color: transparent !important;
+  }
+
+  /* Mobile: disable fixed attachment (iOS quirk) but keep cover image */
+  @media (max-width: 768px) {
+    body {
+      background-attachment: scroll, scroll;
+    }
+  }
+
+  .font-display {
+    font-family: "Noto Serif", serif;
+  }
+
+  .font-arabic {
+    font-family: "Noto Sans Arabic", sans-serif;
+  }
+
+  .font-mono {
+    font-family: "JetBrains Mono", monospace;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--gold) / 0.3);
+    border-radius: 2px;
+  }
+}
+
+@layer components {
+  /* Viewfinder corners — gold */
+  .viewfinder-overlay {
+    background: linear-gradient(to right, hsl(var(--gold)) 2px, transparent 2px) 0 0,
+                linear-gradient(to right, hsl(var(--gold)) 2px, transparent 2px) 0 100%,
+                linear-gradient(to left, hsl(var(--gold)) 2px, transparent 2px) 100% 0,
+                linear-gradient(to left, hsl(var(--gold)) 2px, transparent 2px) 100% 100%,
+                linear-gradient(to bottom, hsl(var(--gold)) 2px, transparent 2px) 0 0,
+                linear-gradient(to bottom, hsl(var(--gold)) 2px, transparent 2px) 100% 0,
+                linear-gradient(to top, hsl(var(--gold)) 2px, transparent 2px) 0 100%,
+                linear-gradient(to top, hsl(var(--gold)) 2px, transparent 2px) 100% 100%;
+    background-repeat: no-repeat;
+    background-size: 30px 30px;
+  }
+
+  /* Glass cards */
+  .glass-card {
+    @apply backdrop-blur-xl rounded-xl;
+    background: hsl(var(--surface-container) / 0.88);
+    border: 1px solid hsl(var(--outline-variant) / 0.15);
+    box-shadow:
+      0 10px 40px hsl(var(--surface) / 0.65),
+      0 2px 8px hsl(var(--surface) / 0.55),
+      inset 0 1px 0 hsl(var(--on-surface) / 0.04),
+      inset 0 -1px 0 hsl(var(--surface) / 0.5);
+  }
+
+  .glass-card-gold {
+    @apply backdrop-blur-xl rounded-xl;
+    background: hsl(var(--surface-container) / 0.88);
+    border: 1px solid hsl(var(--gold) / 0.12);
+    box-shadow:
+      0 10px 40px hsl(var(--surface) / 0.6),
+      0 2px 8px hsl(var(--surface) / 0.5),
+      0 0 24px hsl(var(--gold) / 0.05),
+      inset 0 1px 0 hsl(var(--gold) / 0.08),
+      inset 0 -1px 0 hsl(var(--surface) / 0.5);
+  }
+
+  .glass-card-cyan {
+    @apply backdrop-blur-xl rounded-xl;
+    background: hsl(var(--surface-container) / 0.85);
+    border: 1px solid hsl(var(--gold) / 0.2);
+    box-shadow:
+      0 10px 40px hsl(var(--surface) / 0.6),
+      0 2px 8px hsl(var(--surface) / 0.5),
+      0 0 24px hsl(var(--gold) / 0.08),
+      inset 0 1px 0 hsl(var(--gold) / 0.1),
+      inset 0 -1px 0 hsl(var(--surface) / 0.5);
+  }
+
+  /* Typography hardening inside cards — keeps text crisp over the textured background */
+  .glass-card,
+  .glass-card-gold,
+  .glass-card-cyan {
+    color: hsl(var(--on-surface));
+  }
+
+  .glass-card :is(h1, h2, h3, h4, h5, h6),
+  .glass-card-gold :is(h1, h2, h3, h4, h5, h6),
+  .glass-card-cyan :is(h1, h2, h3, h4, h5, h6) {
+    color: hsl(var(--on-surface));
+    text-shadow: 0 1px 2px hsl(var(--surface) / 0.6);
+    letter-spacing: 0.01em;
+  }
+
+  .glass-card p,
+  .glass-card span,
+  .glass-card label,
+  .glass-card-gold p,
+  .glass-card-gold span,
+  .glass-card-gold label,
+  .glass-card-cyan p,
+  .glass-card-cyan span,
+  .glass-card-cyan label {
+    text-shadow: 0 1px 1px hsl(var(--surface) / 0.45);
+  }
+
+  .glass-card .text-muted-foreground,
+  .glass-card-gold .text-muted-foreground,
+  .glass-card-cyan .text-muted-foreground {
+    color: hsl(var(--on-surface-variant) / 0.95);
+  }
+
+  /* Gold gradients */
+  .gold-gradient {
+    background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-deep)));
+  }
+
+  .gold-text {
+    background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-light)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cyan-gradient {
+    background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-deep)));
+  }
+
+  .cyan-text {
+    background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-light)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .sandstone-gradient {
+    background: linear-gradient(180deg, hsl(var(--sandstone) / 0.6), hsl(var(--background)));
+  }
+
+  .ruins-overlay {
+    background: linear-gradient(180deg, 
+      hsl(var(--surface) / 0.2) 0%, 
+      hsl(var(--surface) / 0.85) 50%,
+      hsl(var(--background)) 100%
+    );
+  }
+
+  .scanning-line {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, hsl(var(--gold)), transparent);
+    position: absolute;
+    width: 100%;
+    animation: scan 2.5s ease-in-out infinite;
+  }
+
+  .separator-ornament {
+    position: relative;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.3), transparent);
+  }
+  .separator-ornament::after {
+    content: '◆';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: hsl(var(--gold));
+    font-size: 8px;
+    background: hsl(var(--background));
+    padding: 0 8px;
+  }
+
+  .stat-card {
+    @apply relative overflow-hidden rounded-xl p-5;
+    background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--secondary)));
+    border: 1px solid hsl(var(--gold) / 0.1);
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--gold) / 0.3), transparent);
+  }
+
+  /* Sci-fi corner brackets — gold */
+  .sci-fi-frame {
+    position: relative;
+  }
+  .sci-fi-frame::before,
+  .sci-fi-frame::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-color: hsl(var(--gold) / 0.4);
+    pointer-events: none;
+  }
+  .sci-fi-frame::before {
+    top: 0; left: 0;
+    border-top: 2px solid;
+    border-left: 2px solid;
+  }
+  .sci-fi-frame::after {
+    top: 0; right: 0;
+    border-top: 2px solid;
+    border-right: 2px solid;
+  }
+
+  .sci-fi-frame-bottom {
+    position: relative;
+  }
+  .sci-fi-frame-bottom::before,
+  .sci-fi-frame-bottom::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-color: hsl(var(--gold) / 0.4);
+    pointer-events: none;
+  }
+  .sci-fi-frame-bottom::before {
+    bottom: 0; left: 0;
+    border-bottom: 2px solid;
+    border-left: 2px solid;
+  }
+  .sci-fi-frame-bottom::after {
+    bottom: 0; right: 0;
+    border-bottom: 2px solid;
+    border-right: 2px solid;
+  }
+
+  /* Primary CTA button — gold gradient jewel */
+  .btn-neon {
+    @apply relative font-bold tracking-wider uppercase rounded-md transition-all;
+    background: linear-gradient(135deg, hsl(43 88% 63%), hsl(38 70% 53%));
+    color: hsl(var(--background));
+    box-shadow: 0 4px 20px hsl(var(--gold) / 0.3);
+  }
+  .btn-neon:hover {
+    box-shadow: 0 6px 30px hsl(var(--gold) / 0.45);
+    filter: brightness(1.05);
+  }
+  .btn-neon:active {
+    transform: scale(0.98);
+  }
+}
+
+@layer utilities {
+  @keyframes scan {
+    0%, 100% { top: 15%; opacity: 0.2; }
+    50% { top: 75%; opacity: 0.6; }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px hsl(var(--gold) / 0.2); }
+    50% { box-shadow: 0 0 40px hsl(var(--gold) / 0.4); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  @keyframes grain {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-2%, -2%); }
+    20% { transform: translate(2%, 2%); }
+    30% { transform: translate(-1%, 1%); }
+    40% { transform: translate(1%, -1%); }
+    50% { transform: translate(-2%, 2%); }
+    60% { transform: translate(2%, -2%); }
+    70% { transform: translate(-1%, -1%); }
+    80% { transform: translate(1%, 1%); }
+    90% { transform: translate(-2%, -2%); }
+  }
+
+  @keyframes rotate-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes data-stream {
+    0% { transform: translateY(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100px); opacity: 0; }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    background-size: 200% 100%;
+    animation: shimmer 3s linear infinite;
+  }
+
+  .animate-rotate-slow {
+    animation: rotate-slow 20s linear infinite;
+  }
+
+  .film-grain::after {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    animation: grain 0.5s steps(1) infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+}
